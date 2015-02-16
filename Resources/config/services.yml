@@ -1,0 +1,4 @@
+services:
+    soil_notification.service.notification:
+        class: Soil\NotificationBundle\Service\Notification
+        arguments: []

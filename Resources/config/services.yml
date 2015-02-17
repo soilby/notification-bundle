@@ -1,4 +1,19 @@
 services:
     soil_notification.service.notification:
         class: Soil\NotificationBundle\Service\Notification
-        arguments: []
+        arguments: [@soil_notification.notification_selector, @soil_discover.service.resolver]
+
+    soil_notification.command.notification_test:
+        class: Soil\NotificationBundle\Command\NotifyCommand
+        arguments: [@soil_notification.service.notification]
+        tags:
+            - { name: console.command }
+
+    soil_notification.notification.comment:
+        class: Soil\NotificationBundle\Notification\CommentNotification
+        arguments: [@templating]
+        tags:
+            - { name: soil_notification }
+
+    soil_notification.notification_selector:
+        class: Soil\NotificationBundle\Notification\Selector\NotificationSelector

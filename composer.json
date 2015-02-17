@@ -13,7 +13,8 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.6.*",
-        "easyrdf/easyrdf": "dev-master"
+        "easyrdf/easyrdf": "dev-master",
+        "soil/discover-bundle": "dev-master"
 
     }
 }

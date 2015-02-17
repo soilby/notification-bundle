@@ -1,0 +1,7 @@
+{% extends "SoilNotificationBundle:notification:mail.layout.html.twig" %}
+
+{% block content %}
+    {{ agent | json_encode | raw }}
+
+{{ agent.mbox }}
+{% endblock %}

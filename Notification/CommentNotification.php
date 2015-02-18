@@ -16,11 +16,15 @@ class CommentNotification extends AbstractNotification {
         return $type === 'CommentNotification';
     }
 
-    public function notify($agent, $params)    {
-        $email = $this->fetchEmail($agent);
-        var_dump($email);
+    public function notify($subscriber, $params)    {
+        $email = $subscriber->mbox;
+
         echo $this->templating->render('SoilNotificationBundle:notification:comment_email.html.twig', [
-            'agent' => $agent
+            'subscriber' => $subscriber,
+            'author' => $params['author'],
+            'comment' => $params['target'],
+            'entity' => $params['entity']
+
         ]);
 
     }

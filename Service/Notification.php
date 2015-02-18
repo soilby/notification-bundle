@@ -9,7 +9,10 @@
 namespace Soil\NotificationBundle\Service;
 
 
+use EasyRdf\Format;
 use EasyRdf\Graph;
+use EasyRdf\RdfNamespace;
+use Soil\DiscoverBundle\Entity\Agent;
 use Soil\DiscoverBundle\Service\Resolver;
 use Soil\DiscoverBundle\Services\Discoverer;
 use Soil\NotificationBundle\Notification\Selector\NotificationSelector;
@@ -32,28 +35,24 @@ class Notification {
     }
 
 
-    public function notify($notificationType, $agentURI, $params = [])    {
-        var_dump($notificationType);
+    public function notify($notificationType, $subscriberAgentURI, $params = [])    {
         $notification = $this->notificationSelector->selectNotification($notificationType);
         if (!$notification) {
             throw new \Exception("Unknow notification type");
         }
-        $agentInfo = $this->discover($agentURI);
+
+        $subscriberAgent = $this->resolver->getEntityForURI($subscriberAgentURI, 'Soil\DiscoverBundle\Entity\Agent');
 
         foreach ($params as &$paramValue)    {
-            $paramValue = $this->discover($paramValue);
+            $paramValue = $this->resolver->getEntityForURI($paramValue, true);
         }
 
-        $notification->notify($agentInfo, $params);
-    }
-
-
-    protected function discover($uri)   {
-        return $this->resolver->getEntityForURI($uri);
+        $notification->notify($subscriberAgent, $params);
     }
 
 
 
 
 
-} 
+
+}

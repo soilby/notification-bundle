@@ -20,13 +20,4 @@ class AbstractNotification {
         $this->templating = $templating;
     }
 
-    protected function fetchEmail($agent) {
-        $mailBox = (string)$agent['mbox'];
-
-        if (!$mailBox || strpos($mailBox, 'mailto:') !== 0) {
-            throw new \Exception("Mail box isn't available or corrupted");
-        }
-
-        return substr($mailBox, 7);
-    }
-} 
+}

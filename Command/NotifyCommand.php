@@ -58,7 +58,7 @@ class NotifyCommand extends Command  {
 
             $this->notification->notify($input->getArgument('type'), $input->getArgument('agent'), [
                 'entity' => 'http://talaka.by.local/incubator/idea/2',
-                'target' => 'http://comments.talaka.by.local/comment/54e0e0731388418e2f8cdd51',
+                'comment' => 'http://comments.talaka.by.local/comment/54e0e0731388418e2f8cdd51',
                 'author' => 'http://talaka.by.local/user/8119'
             ]);
 

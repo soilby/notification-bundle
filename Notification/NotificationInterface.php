@@ -11,5 +11,7 @@ namespace Soil\NotificationBundle\Notification;
 
 interface NotificationInterface {
 
+    public function support($type);
+
     public function notify($agent, $params);
 } 

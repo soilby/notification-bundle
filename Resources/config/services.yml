@@ -12,6 +12,8 @@ services:
     soil_notification.notification.comment:
         class: Soil\NotificationBundle\Notification\CommentNotification
         arguments: [@templating]
+        calls:
+            - [setBuzz, [@buzz.client]]
         tags:
             - { name: soil_notification }
 

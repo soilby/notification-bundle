@@ -2,10 +2,10 @@ services:
     soil_notification.service.notification:
         class: Soil\NotificationBundle\Service\Notification
         arguments: [@soil_notification.notification_selector, @soil_discover.service.resolver]
-    calls:
-        - [setLogger, [@logger]]
-    tags:
-        - { name: monolog.logger, channel: queue }
+        calls:
+            - [setLogger, [@logger]]
+        tags:
+            - { name: monolog.logger, channel: queue }
 
 
     soil_notification.command.notification_test:

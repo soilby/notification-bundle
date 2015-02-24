@@ -9,9 +9,11 @@
 namespace Soil\NotificationBundle\Notification;
 
 
+use Soil\DiscoverBundle\Entity\Agent;
+
 interface NotificationInterface {
 
     public function support($type);
 
-    public function notify($agent, $params);
+    public function notify(Agent $agent, $params);
 } 

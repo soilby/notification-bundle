@@ -2,6 +2,11 @@ services:
     soil_notification.service.notification:
         class: Soil\NotificationBundle\Service\Notification
         arguments: [@soil_notification.notification_selector, @soil_discover.service.resolver]
+    calls:
+        - [setLogger, [@logger]]
+    tags:
+        - { name: monolog.logger, channel: queue }
+
 
     soil_notification.command.notification_test:
         class: Soil\NotificationBundle\Command\NotifyCommand
@@ -14,8 +19,10 @@ services:
         arguments: [@templating]
         calls:
             - [setBuzz, [@buzz.client]]
+            - [setLogger, [@logger]]
         tags:
             - { name: soil_notification }
+            - { name: monolog.logger, channel: queue }
 
     soil_notification.notification_selector:
         class: Soil\NotificationBundle\Notification\Selector\NotificationSelector

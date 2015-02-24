@@ -3,6 +3,8 @@ namespace Soil\NotificationBundle\Notification;
 use Buzz\Client\Curl;
 use Buzz\Message\Request;
 use Buzz\Message\Response;
+use Soil\DiscoverBundle\Entity\Agent;
+use Symfony\Bridge\Monolog\Logger;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 
 
@@ -16,6 +18,12 @@ use Symfony\Bundle\TwigBundle\TwigEngine;
 class CommentNotification extends AbstractNotification implements NotificationInterface {
 
     /**
+     * @var Logger
+     */
+    protected $logger;
+
+
+    /**
      * @var Curl
      */
     protected $buzz;
@@ -24,12 +32,16 @@ class CommentNotification extends AbstractNotification implements NotificationIn
         $this->buzz = $buzz;
     }
 
+
+
     public function support($type)   {
         return $type === 'CommentNotification';
     }
 
-    public function notify($subscriber, $params)    {
+    public function notify(Agent $subscriber, $params)    {
         $email = $subscriber->mbox;
+
+        $this->logger->addInfo('Process comment notification for mailbox ' . $subscriber->displayName);
 
         $message = $this->templating->render('SoilNotificationBundle:notification:comment_email.html.twig', [
             'subscriber' => $subscriber,
@@ -38,6 +50,8 @@ class CommentNotification extends AbstractNotification implements NotificationIn
             'entity' => $params['entity']
 
         ]);
+
+        $this->logger->addInfo($message);
 
         $writer = new \XMLWriter();
         $writer->openMemory();
@@ -63,15 +77,26 @@ class CommentNotification extends AbstractNotification implements NotificationIn
         $s = $writer->outputMemory(true);
 
 
-        $request = new Request('POST', '/api/send-mail', 'talaka.by.local');
+        $request = new Request('POST', '/api/send-mail', 'dev.talaka.soil.by');
         $request->setContent($s);
 
         $response = new Response();
-        $this->buzz->send($request, $response);
+        try {
+            $this->buzz->send($request, $response);
+        }
+        catch(\Exception $e)    {
+            $this->logger->addCritical('Send mail error');
+            $this->logger->addCritical((string) $e);
+        }
 
-        echo $response->getContent();
 
+        $this->logger->addInfo('mail server answer');
+        $this->logger->addInfo($response->getContent());
 
+    }
+
+    public function setLogger($logger)  {
+        $this->logger = $logger;
     }
 
 }

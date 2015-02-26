@@ -49,15 +49,15 @@ class Notification {
             throw new \Exception("Unknow notification type");
         }
 
-        $this->logger->addInfo('Selected notification: ', get_class($notification));
+        $this->logger->addInfo('Selected notification: ' . get_class($notification));
 
-        $this->logger->addInfo('subscriber (agent): ', $subscriberAgentURI);
+        $this->logger->addInfo('subscriber (agent): ' . $subscriberAgentURI);
 
         $subscriberAgent = $this->resolve($subscriberAgentURI, 'Soil\DiscoverBundle\Entity\Agent');
 
         foreach ($params as $paramName => &$paramValue)    {
 
-            $this->logger->addInfo('param entity: ', $paramValue);
+            $this->logger->addInfo('param entity: ' . $paramValue);
             $paramValue = $this->resolve($paramValue, true);
         }
 

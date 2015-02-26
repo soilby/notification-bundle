@@ -47,7 +47,7 @@ class NotifyCommand extends Command  {
             ->addArgument(
                 'agent',
                 InputArgument::OPTIONAL,
-                'Notification type', 'http://talaka.by.local/user/8118'
+                'Notification type', 'http://dev.talaka.soil.by/user/8118'
             )
         ;
     }
@@ -57,9 +57,9 @@ class NotifyCommand extends Command  {
         try {
 
             $this->notification->notify($input->getArgument('type'), $input->getArgument('agent'), [
-                'entity' => 'http://talaka.by.local/incubator/idea/2',
-                'comment' => 'http://comments.talaka.by.local/comment/54e0e0731388418e2f8cdd51',
-                'author' => 'http://talaka.by.local/user/8119'
+                'entity' => 'http://dev.talaka.soil.by/incubator/idea/3',
+                'comment' => 'http://comments.talaka.soil.by/comment/54ee01f5859cbd5426a4694d',
+                'author' => 'http://dev.talaka.soil.by/user/8119'
             ]);
 
         }

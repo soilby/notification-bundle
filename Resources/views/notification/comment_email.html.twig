@@ -3,13 +3,13 @@
 {% block content %}
 
     <div>
-        Hi, {{ subscriber.displayName }}!
+        Hi, {{ subscriber.displayName | raw }}!
     </div>
 
     <div>
     User <b>{{ author.displayName }}</b> was commented entity
 
-    <a href="{{ entity._origin }}">"{{ entity.name }}"</a>
+    <a href="{{ entity._origin }}">"{{ entity.name | raw }}"</a>
      at {{ comment.creationDate }}
 
     </div>

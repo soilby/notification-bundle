@@ -48,10 +48,25 @@ class CommentNotification extends AbstractNotification implements NotificationIn
             'author' => $params['author'],
             'comment' => $params['comment'],
             'entity' => $params['entity']
-
         ]);
 
-        $this->logger->addInfo($message);
+//        $tmp = $subscriber->displayName;
+//        $count = 0;
+//        while (mb_detect_encoding($tmp)=="UTF-8")
+//        {
+//            $tmp = utf8_decode($tmp);
+//            $count++;
+//        }
+//        var_dump(mb_detect_encoding($tmp));
+//        var_dump($tmp);
+//        var_dump($count);
+//        exit();
+
+        $this->logger->addAlert($subscriber->displayName);
+
+        $this->logger->addAlert($message);
+
+        $encodedMessage = base64_encode($message);
 
         $writer = new \XMLWriter();
         $writer->openMemory();
@@ -69,15 +84,16 @@ class CommentNotification extends AbstractNotification implements NotificationIn
                 $writer->endElement();
 
                 $writer->startElement('message');
-                    $writer->text($message);
+                    $writer->text($encodedMessage);
                 $writer->endElement();
+
             $writer->endElement();
         $writer->endDocument();
 
         $s = $writer->outputMemory(true);
 
 
-        $request = new Request('POST', '/api/send-mail', 'dev.talaka.soil.by');
+        $request = new Request('POST', '/send', 'sendmail.talaka.by');
         $request->setContent($s);
 
         $response = new Response();

@@ -18,11 +18,30 @@ services:
         class: Soil\NotificationBundle\Notification\CommentNotification
         arguments: [@templating]
         calls:
-            - [setBuzz, [@buzz.client]]
+            - [addChannel, [email, @soil_notification.notification_channel.email_channel]]
             - [setLogger, [@logger]]
         tags:
             - { name: soil_notification }
             - { name: monolog.logger, channel: queue }
 
+
+    soil_notification.notification.campaign_complete:
+        class: Soil\NotificationBundle\Notification\CampaignCompleteNotification
+        arguments: [@templating]
+        calls:
+            - [addChannel, [email, @soil_notification.notification_channel.email_channel]]
+            - [setLogger, [@logger]]
+        tags:
+            - { name: soil_notification }
+            - { name: monolog.logger, channel: queue }
+
+
+
     soil_notification.notification_selector:
         class: Soil\NotificationBundle\Notification\Selector\NotificationSelector
+
+    soil_notification.notification_channel.email_channel:
+        class: Soil\NotificationBundle\Channel\EmailChannel
+        calls:
+            - [setBuzz, [@buzz.client]]
+            - [setLogger, [@logger]]

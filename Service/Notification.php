@@ -44,7 +44,12 @@ class Notification {
 
 
     public function notify($notificationType, $subscriberAgentURI, $params = [])    {
+
         $notification = $this->notificationSelector->selectNotification($notificationType);
+        var_dump($notificationType);
+        var_dump($notification);
+        exit('NOTIFICATION');
+
         if (!$notification) {
             throw new \Exception("Unknow notification type");
         }

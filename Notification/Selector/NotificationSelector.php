@@ -26,7 +26,6 @@ class NotificationSelector {
      * @return NotificationInterface | bool
      */
     public function selectNotification($notificationType)   {
-
         foreach ($this->notifications as $notification)  {
             if ($notification->support($notificationType)) {
                 return $notification;

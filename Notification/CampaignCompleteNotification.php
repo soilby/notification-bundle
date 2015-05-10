@@ -19,16 +19,31 @@ class CampaignCompleteNotification extends AbstractNotification implements Notif
 
     public function notify(Agent $subscriber, $params)
     {
-        exit('NOTIFY');
+        $this->logger->addInfo('Campaign complete notify...');
+
         $email = $subscriber->mbox;
 
 
         $this->logger->addInfo('Process campaign complete notification for mailbox ' . $subscriber->displayName);
 
-        $message = $this->templating->render('SoilNotificationBundle:notification:comment_email.html.twig', [
+        $entity = $params['entity'];
+
+        $originURL = $entity->_origin;
+
+        $baseURL = substr($originURL, 0, strpos($originURL, '/', 7)); //next slash after https://
+
+        $message = $this->templating->render('SoilNotificationBundle:notification:campaign_complete_email.html.twig', [
             'subscriber' => $subscriber,
-            'entity' => $params['entity']
+            'entity' => $entity,
+            'promiseSum' => $params['promiseSum'],
+            'promiseDate' => $params['promiseDate'],
+            'baseURL' => $baseURL
         ]);
+
+        $this->broadcast($subscriber, $message, [
+            'subject' => 'Оплата поддержки проекта' . ' ' . $entity->name,
+        ]);
+
 
         var_dump($email);
         var_dump($message);

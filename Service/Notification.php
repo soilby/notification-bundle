@@ -46,12 +46,9 @@ class Notification {
     public function notify($notificationType, $subscriberAgentURI, $params = [])    {
 
         $notification = $this->notificationSelector->selectNotification($notificationType);
-        var_dump($notificationType);
-        var_dump($notification);
-        exit('NOTIFICATION');
 
         if (!$notification) {
-            throw new \Exception("Unknow notification type");
+            throw new \Exception("Unknown notification type");
         }
 
         $this->logger->addInfo('Selected notification: ' . get_class($notification));
@@ -62,11 +59,26 @@ class Notification {
 
         foreach ($params as $paramName => &$paramValue)    {
 
-            $this->logger->addInfo('param entity: ' . $paramValue);
-            $paramValue = $this->resolve($paramValue, true);
+            if (is_scalar($paramValue)) {
+                $stringRepresentation = (string)$paramValue;
+            }
+            else    {
+                $stringRepresentation = gettype($paramValue);
+            }
+
+            $this->logger->addInfo('param value: ' . $stringRepresentation);
+
+            if ($this->isURI($paramValue))  {
+                $this->logger->addInfo('resolving..');
+                $paramValue = $this->resolve($paramValue, true);
+            }
         }
 
         $notification->notify($subscriberAgent, $params);
+    }
+
+    protected function isURI($uri)  {
+        return is_string($uri) && strpos($uri, 'http') === 0;
     }
 
 

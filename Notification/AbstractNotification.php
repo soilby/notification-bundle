@@ -9,6 +9,7 @@
 namespace Soil\NotificationBundle\Notification;
 
 
+use Soil\DiscoverBundle\Entity\Agent;
 use Soil\NotificationBundle\Channel\ChannelInterface;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Bridge\Twig\TwigEngine;
@@ -43,6 +44,17 @@ class AbstractNotification {
 
     public function setLogger($logger)  {
         $this->logger = $logger;
+    }
+
+
+    public function broadcast(Agent $subscriber, $message, $options)    {
+        foreach ($this->channels as $channelName => $channel) {
+            $result = $channel->putNotification($subscriber, $message, $options);
+
+            if (!$result)   {
+                $this->logger->addError('Send notification failed via ' . $channelName);
+            }
+        }
     }
 
 

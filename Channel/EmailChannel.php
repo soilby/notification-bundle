@@ -52,8 +52,8 @@ class EmailChannel implements ChannelInterface {
         $writer->startDocument('1.0','UTF-8');
         $writer->startElement('envelope');
 
-        $writer->startElement($options['subject']);
-            $writer->text('New comment');
+        $writer->startElement('subject');
+            $writer->text($options['subject']);
         $writer->endElement();
 
         $writer->startElement('recipient');

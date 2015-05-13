@@ -24,14 +24,16 @@
                             <tbody>
                             <tr>
                                 <td>
-                                    <a href="{{ entity._origin }}"><img src="{{ entity.image }}"/></a>
+                                    <a href="{{ entity.origin }}">
+                                        <img src="{{ entity.image.thumbnail }}"/>
+                                    </a>
                                 </td>
                                 <td valign="top" style="padding:16px 0 0 12px;">
-                                    <a href="{{ entity._origin }}" style="font-size:15px;color:#0059b2;font-family:Verdana;">{{ entity.name | raw }}</a>
+                                    <a href="{{ entity.origin }}" style="font-size:15px;color:#0059b2;font-family:Verdana;">{{ entity.name | raw }}</a>
                                     <p style="font-size:13px;color:#333333;font-family:Verdana;">
                                         Кампания по сбору средств завершилась. Чтобы исполнить ваше обещание поддержки на сумму {{ promiseSum }} руб, оплатите её
                                     </p>
-                                    <a href="{{ entity._origin }}" style="color:#d9482b; font-family:Verdana;font-size:15px;">Перейти к оплате</a>
+                                    <a href="{{ baseURL }}/talakosht/payment/{{ entity.id }}" style="color:#d9482b; font-family:Verdana;font-size:15px;">Перейти к оплате</a>
                                 </td>
                             </tr>
                             </tbody>
@@ -48,21 +50,5 @@
         </td></tr>
     </tbody>
 </table>
-
-
-    <div>Необходимо оплатить вашу поддержку</div>
-
-    <div>
-        <a href="{{ entity._origin }}">"{{ entity.name | raw }}"</a>
-    </div>
-
-    <div>
-        Кампания по сбору средств завершилася.
-        Чтобы исполнить ваше обещание поддержки на сумму {{ promiseSum }} руб, оплатите её:
-    </div>
-    <div>
-        <a href="{{ baseURL }}/talakosht/payment/{{ entity.id }}">Перейти к оплате.</a>
-    </div>
-
 
 {% endblock %}

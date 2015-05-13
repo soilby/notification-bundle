@@ -21,14 +21,16 @@ class CampaignCompleteNotification extends AbstractNotification implements Notif
     {
         $this->logger->addInfo('Campaign complete notify...');
 
-        $email = $subscriber->mbox;
-
+        $email = $subscriber->getEmail();
 
         $this->logger->addInfo('Process campaign complete notification for mailbox ' . $subscriber->displayName);
 
         $entity = $params['entity'];
 
-        $originURL = $entity->_origin;
+//        var_dump($entity->getImage()->getThumbnail());exit();
+
+
+        $originURL = $entity->getOrigin();
 
         $baseURL = substr($originURL, 0, strpos($originURL, '/', 7)); //next slash after https://
 
@@ -44,9 +46,6 @@ class CampaignCompleteNotification extends AbstractNotification implements Notif
             'subject' => 'Оплата поддержки проекта' . ' ' . $entity->name,
         ]);
 
-
-        var_dump($email);
-        var_dump($message);
 
     }
 

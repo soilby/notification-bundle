@@ -44,8 +44,9 @@ class EmailChannel implements ChannelInterface {
 
     public function putNotification(Agent $subscriber, $message, $options) {
 
-        $email = $subscriber->mbox;
+        $email = $subscriber->getEmail();
         $encodedMessage = base64_encode($message);
+
 
         $writer = new \XMLWriter();
         $writer->openMemory();

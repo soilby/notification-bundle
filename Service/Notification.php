@@ -59,7 +59,7 @@ class Notification {
 
         foreach ($params as $paramName => &$paramValue)    {
 
-            if (is_scalar($paramValue)) {
+            if (is_scalar($paramValue)) { //for logging purpose
                 $stringRepresentation = (string)$paramValue;
             }
             else    {

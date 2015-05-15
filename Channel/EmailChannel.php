@@ -27,6 +27,7 @@ class EmailChannel implements ChannelInterface {
 
     public function setBuzz($buzz)  {
         $this->buzz = $buzz;
+        $this->buzz->setTimeout(10000);
     }
 
 
@@ -46,7 +47,6 @@ class EmailChannel implements ChannelInterface {
 
         $email = $subscriber->getEmail();
         $encodedMessage = base64_encode($message);
-
 
         $writer = new \XMLWriter();
         $writer->openMemory();

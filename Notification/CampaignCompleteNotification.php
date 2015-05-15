@@ -34,7 +34,11 @@ class CampaignCompleteNotification extends AbstractNotification implements Notif
 
         $baseURL = substr($originURL, 0, strpos($originURL, '/', 7)); //next slash after https://
 
-        $message = $this->templating->render('SoilNotificationBundle:notification:campaign_complete_email.html.twig', [
+        $locale = $subscriber->getLocale();
+
+        $template = 'SoilNotificationBundle:notification:campaign_complete_email.' . $locale . '.html.twig';
+
+        $message = $this->templating->render($template, [
             'subscriber' => $subscriber,
             'entity' => $entity,
             'promiseSum' => $params['promiseSum'],

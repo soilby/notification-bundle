@@ -1,0 +1,54 @@
+{% extends "SoilNotificationBundle:notification:mail.layout.html.twig" %}
+
+{% block content %}
+
+    ﻿<table width="100%">
+    <tbody>
+    <tr><td align="center">
+            <table width="600" border="0" cellspacing="0" cellpadding="0" style="background:#e6eef2;">
+                <tbody>
+                <tr style="height:77px;background:url('{{ baseURL }}/assets/img/mail/header-back.png');">
+                    <td valign="top">
+                        <a href="#" style="background:url('{{ baseURL }}/assets/img/mail/logo.jpg'); width:207px;height:48px;display:block;margin-top:12px;"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top">
+                        <h3 style="font-family:Verdana;text-align:center;padding:30px 0;margin:0;">Небаходна аплаціць вашую падтрымку</h3>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="background:url('{{ baseURL }}/assets/img/mail/project-back.png'); height:195px; padding:4px 10px;">
+                        <table cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <a href="{{ entity.origin }}">
+                                        <img src="{{ entity.image.thumbnail }}"/>
+                                    </a>
+                                </td>
+                                <td valign="top" style="padding:16px 0 0 12px;">
+                                    <a href="{{ entity.origin }}" style="font-size:15px;color:#0059b2;font-family:Verdana;">{{ entity.name | raw }}</a>
+                                    <p style="font-size:13px;color:#333333;font-family:Verdana;">
+                                        Кампанія па збору сродкаў завяршылася. Каб выканаць вашае абяцанне падтрымкі на суму {{ promiseSum }} руб, аплаціце яе:
+                                    </p>
+                                    <a href="{{ baseURL }}/talakosht/payment/{{ entity.id }}" style="color:#d9482b; font-family:Verdana;font-size:15px;">Перайсці да аплаты</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="height:20px;">
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </td></tr>
+    </tbody>
+</table>
+
+{% endblock %}

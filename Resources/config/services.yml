@@ -35,6 +35,17 @@ services:
             - { name: soil_notification }
             - { name: monolog.logger, channel: queue }
 
+    soil_notification.notification.campaign_complete_remind:
+        class: Soil\NotificationBundle\Notification\CampaignCompleteRemindNotification
+        arguments: [@templating]
+        calls:
+            - [addChannel, [email, @soil_notification.notification_channel.email_channel]]
+            - [addChannel, [sms, @soil_notification.notification_channel.sms_channel]]
+            - [setLogger, [@logger]]
+        tags:
+            - { name: soil_notification }
+            - { name: monolog.logger, channel: queue }
+
 
 
     soil_notification.notification_selector:
@@ -42,6 +53,14 @@ services:
 
     soil_notification.notification_channel.email_channel:
         class: Soil\NotificationBundle\Channel\EmailChannel
+        arguments: [%soil_notification.email_channel.gateway%]
+        calls:
+            - [setBuzz, [@buzz.client]]
+            - [setLogger, [@logger]]
+
+    soil_notification.notification_channel.sms_channel:
+        class: Soil\NotificationBundle\Channel\SmsChannel
+        arguments: [@soil_smser.gateway.smsp_by]
         calls:
             - [setBuzz, [@buzz.client]]
             - [setLogger, [@logger]]

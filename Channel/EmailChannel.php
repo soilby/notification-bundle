@@ -25,16 +25,27 @@ class EmailChannel implements ChannelInterface {
      */
     protected $buzz;
 
+    /**
+     * @var Logger
+     */
+    protected $logger;
+
+
+    /**
+     * @var string
+     */
+    protected $mailGateway;
+
+    public function __construct($mailGateway)   {
+        $this->mailGateway = $mailGateway;
+    }
+
+
     public function setBuzz($buzz)  {
         $this->buzz = $buzz;
         $this->buzz->setTimeout(10000);
     }
 
-
-    /**
-     * @var Logger
-     */
-    protected $logger;
 
 
     public function setLogger($logger)  {
@@ -73,7 +84,8 @@ class EmailChannel implements ChannelInterface {
         $s = $writer->outputMemory(true);
 
 
-        $request = new Request('POST', '/send', 'sendmail.talaka.by');
+        $request = new Request('POST', $this->mailGateway);
+//        $request = new Request('POST', '/send', 'sendmail.talaka.by');
         $request->setContent($s);
 
         $response = new Response();

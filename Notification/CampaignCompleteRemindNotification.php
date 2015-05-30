@@ -52,12 +52,13 @@ class CampaignCompleteRemindNotification extends AbstractNotification implements
 
 
 
-
-        $template = 'SoilNotificationBundle:notification:campaign_complete.sms.' . $locale . '.html.twig';
+        $template = 'SoilNotificationBundle:notification:campaign_complete_remind.sms.' . $locale . '.html.twig';
 
         $message = $this->templating->render($template, []);
 
-        $this->channels['sms']->putNotification($subscriber, $message, []);
+        $this->channels['sms']->putNotification($subscriber, $message, [
+            'urgent' => true
+        ]);
     }
 
 

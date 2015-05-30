@@ -26,5 +26,6 @@ class SoilNotificationExtension extends Extension
         $loader->load('services.yml');
 
         $container->setParameter('soil_notification.email_channel.gateway', $config['mail_gateway']);
+        $container->setParameter('soil_notification.sms_channel.sender_name', $config['sms_sender']);
     }
 }

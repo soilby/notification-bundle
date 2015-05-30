@@ -21,6 +21,18 @@ use Symfony\Bridge\Monolog\Logger;
 class SmsChannel implements ChannelInterface {
 
 
+
+    /**
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
+     * @var string
+     */
+    protected $sender = 'sender';
+
+
     /**
      * @var GatewayInterface
      */
@@ -32,8 +44,31 @@ class SmsChannel implements ChannelInterface {
 
     public function putNotification(Agent $subscriber, $message, $options)  {
 
-        return $this->gateway->send($subscriber->getPhoneNumber(), $message, []);
+        if (!array_key_exists('sender', $options))  {
+            $options['sender'] = $this->sender;
+        }
+
+        return $this->gateway->send($subscriber->getPhoneNumber(), $message, $options);
     }
+
+    /**
+     * @param Logger $logger
+     */
+    public function setLogger($logger)
+    {
+        $this->logger = $logger;
+    }
+
+    /**
+     * @param string $sender
+     */
+    public function setSender($sender)
+    {
+        $this->sender = $sender;
+    }
+
+
+
 
 
 } 

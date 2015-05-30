@@ -62,5 +62,5 @@ services:
         class: Soil\NotificationBundle\Channel\SmsChannel
         arguments: [@soil_smser.gateway.smsp_by]
         calls:
-            - [setBuzz, [@buzz.client]]
             - [setLogger, [@logger]]
+            - [setSender, [%soil_notification.sms_channel.sender_name%]]

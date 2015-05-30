@@ -21,7 +21,9 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('soil_notification');
 
         $rootNode->children()
-            ->scalarNode('mail_gateway')->end();
+            ->scalarNode('mail_gateway')->end()
+            ->scalarNode('sms_sender')->end()
+        ->end();
 
 
         return $treeBuilder;

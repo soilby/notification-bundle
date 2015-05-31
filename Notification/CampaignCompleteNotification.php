@@ -9,6 +9,7 @@
 namespace Soil\NotificationBundle\Notification;
 
 use Soil\DiscoverBundle\Entity\Agent;
+use Soil\NotificationBundle\Entity\PendingNotification;
 
 class CampaignCompleteNotification extends AbstractNotification implements NotificationInterface {
 
@@ -49,6 +50,13 @@ class CampaignCompleteNotification extends AbstractNotification implements Notif
         $this->broadcast($subscriber, $message, [
             'subject' => 'Оплата поддержки проекта' . ' ' . $entity->name,
         ]);
+
+
+        $pendingNotification = new PendingNotification();
+        $pendingNotification->setAgentURI($subscriber->getOrigin());
+
+        $pendingNotification->
+        $pendingNotification->setNotification([]);
 
 
     }

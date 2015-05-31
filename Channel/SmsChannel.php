@@ -48,7 +48,19 @@ class SmsChannel implements ChannelInterface {
             $options['sender'] = $this->sender;
         }
 
-        return $this->gateway->send($subscriber->getPhoneNumber(), $message, $options);
+        $phone = $subscriber->getPhoneNumber();
+        if ($phone)    {
+            $phone = preg_replace("/\D/","", $phone);
+            return $this->gateway->send($phone, $message, $options);
+        }
+        else    {
+            $displayName = $subscriber->getDisplayName();
+            $userId = $subscriber->getId();
+            $this->logger->addAlert("Phone number isn't exist for $displayName ($userId)");
+
+            return false;
+        }
+
     }
 
     /**

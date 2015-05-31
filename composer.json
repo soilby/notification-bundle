@@ -15,7 +15,8 @@
         "symfony/symfony": "2.6.*",
         "easyrdf/easyrdf": "dev-master",
         "soil/discover-bundle": "dev-master",
-        "soil/smser-bundle": "dev-master"
+        "soil/smser-bundle": "dev-master",
+        "soil/on-site-notification-bundle":  "dev-master"
 
     }
 }

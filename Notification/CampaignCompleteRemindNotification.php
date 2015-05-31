@@ -46,19 +46,28 @@ class CampaignCompleteRemindNotification extends AbstractNotification implements
             'baseURL' => $baseURL
         ]);
 
-        $this->channels['email']->putNotification($subscriber, $message, [
+
+        $result = $this->channels['email']->putNotification($subscriber, $message, [
             'subject' => 'Оплата поддержки проекта' . ' ' . $entity->name,
         ]);
 
 
+        $this->logger->addInfo('Mail Channel answer:');
+        $this->logger->addInfo(json_encode($result));
+
 
         $template = 'SoilNotificationBundle:notification:campaign_complete_remind.sms.' . $locale . '.html.twig';
 
+        $this->logger->addInfo('Prepare message for SMS..');
         $message = $this->templating->render($template, []);
 
-        $this->channels['sms']->putNotification($subscriber, $message, [
+        $result = $this->channels['sms']->putNotification($subscriber, $message, [
             'urgent' => true
         ]);
+
+
+        $this->logger->addInfo('SMS Channel answer:');
+        $this->logger->addInfo(json_encode($result));
     }
 
 

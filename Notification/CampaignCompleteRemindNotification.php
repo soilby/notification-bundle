@@ -56,7 +56,7 @@ class CampaignCompleteRemindNotification extends AbstractNotification implements
         $this->logger->addInfo(json_encode($result));
 
 
-        $template = 'SoilNotificationBundle:notification:campaign_complete_remind.sms.' . $locale . '.html.twig';
+        $template = 'SoilNotificationBundle:notification:campaign_complete_remind.sms.' . $locale . '.text.twig';
 
         $this->logger->addInfo('Prepare message for SMS..');
         $message = $this->templating->render($template, []);

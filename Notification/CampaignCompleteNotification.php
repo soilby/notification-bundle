@@ -9,7 +9,10 @@
 namespace Soil\NotificationBundle\Notification;
 
 use Soil\DiscoverBundle\Entity\Agent;
-use Soil\NotificationBundle\Entity\PendingNotification;
+use Soil\OnSiteNotificationBundle\Entity\ShowStrategy\OnEnterShowStrategy;
+use Soil\OnSiteNotificationBundle\Entity\ShowStrategy\QuantityLimitedShowStrategy;
+use Soil\OnSiteNotificationBundle\Entity\ShowStrategy\QuantityLimitWithTermBetween;
+use Soil\OnSiteNotificationBundle\Entity\ShowStrategy\ShowStrategyInterface;
 
 class CampaignCompleteNotification extends AbstractNotification implements NotificationInterface {
 
@@ -47,18 +50,53 @@ class CampaignCompleteNotification extends AbstractNotification implements Notif
             'baseURL' => $baseURL
         ]);
 
-        $this->broadcast($subscriber, $message, [
+        $result = $this->channels['email']->putNotification($subscriber, $message, [
             'subject' => 'Оплата поддержки проекта' . ' ' . $entity->name,
         ]);
 
-
-        $pendingNotification = new PendingNotification();
-        $pendingNotification->setAgentURI($subscriber->getOrigin());
-
-        $pendingNotification->
-        $pendingNotification->setNotification([]);
+        $this->logger->addInfo('Mail Channel answer:');
+        $this->logger->addInfo(json_encode($result));
 
 
+        $template = 'SoilNotificationBundle:notification:campaign_complete.onsite.' . $locale . '.text.twig';
+
+        $this->logger->addInfo('Prepare message for OnSite Notification..');
+        $message = $this->templating->render($template, []);
+
+        if (array_key_exists('paymentLink', $params))   {
+            $relatedLink = $params['paymentLink'];
+            if (is_object($relatedLink))    {
+                $relatedLink = (string)$relatedLink;
+            }
+        }
+        else    {
+            $relatedLink = null;
+        }
+
+        if (array_key_exists('promiseURI', $params))   {
+            $sourcePromise = $params['promiseURI'];
+            if (is_object($sourcePromise))    {
+                $promiseURI = (string)$sourcePromise;
+            }
+        }
+        else    {
+            $promiseURI = null;
+        }
+
+
+        $strategy = new QuantityLimitWithTermBetween();
+        $strategy->setShowLimit(5);
+//        $strategy->setTermBetweenShow(24 * 3600);
+        $strategy->setTermBetweenShow(1*60);
+        $strategy->setTermControlSide(ShowStrategyInterface::CONTROL_SIDE_CLIENT);
+
+        $this->channels['onsite']->putNotification($subscriber, $message, [
+            'action' => 'Оплатить',
+            'type' => __CLASS__,
+            'relatedLink' => $relatedLink,
+            'showStrategy' => $strategy,
+            'promiseURI' => $promiseURI
+        ]);
     }
 
 

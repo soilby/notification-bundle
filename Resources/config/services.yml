@@ -30,6 +30,7 @@ services:
         arguments: [@templating]
         calls:
             - [addChannel, [email, @soil_notification.notification_channel.email_channel]]
+            - [addChannel, [onsite, @soil_notification.notification_channel.onsite_channel]]
             - [setLogger, [@logger]]
         tags:
             - { name: soil_notification }
@@ -60,7 +61,7 @@ services:
 
     soil_notification.notification_channel.sms_channel:
         class: Soil\NotificationBundle\Channel\SmsChannel
-        arguments: [@soil_smser.gateway.smsp_by]soil_pending_notification.service.notification
+        arguments: [@soil_smser.gateway.smsp_by]
         calls:
             - [setLogger, [@logger]]
             - [setSender, [%soil_notification.sms_channel.sender_name%]]
@@ -70,7 +71,3 @@ services:
         arguments: [@soil_on_site_notification.service.notification_manager]
         calls:
             - [setLogger, [@logger]]
-
-
-    soil_notification.controller.pending_notification:
-        class: Soil\NotificationBundle\Controller\PendingNotificationController

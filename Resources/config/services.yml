@@ -42,6 +42,7 @@ services:
         calls:
             - [addChannel, [email, @soil_notification.notification_channel.email_channel]]
             - [addChannel, [sms, @soil_notification.notification_channel.sms_channel]]
+            - [addChannel, [onsite, @soil_notification.notification_channel.onsite_channel]]
             - [setLogger, [@logger]]
         tags:
             - { name: soil_notification }

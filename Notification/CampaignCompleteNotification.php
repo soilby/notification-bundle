@@ -74,10 +74,11 @@ class CampaignCompleteNotification extends AbstractNotification implements Notif
         }
 
         if (array_key_exists('promiseURI', $params))   {
-            $sourcePromise = $params['promiseURI'];
-            if (is_object($sourcePromise))    {
-                $promiseURI = (string)$sourcePromise;
+            $promiseURI = $params['promiseURI'];
+            if (is_object($promiseURI))    {
+                $promiseURI = (string)$promiseURI;
             }
+
         }
         else    {
             $promiseURI = null;
@@ -86,8 +87,8 @@ class CampaignCompleteNotification extends AbstractNotification implements Notif
 
         $strategy = new QuantityLimitWithTermBetween();
         $strategy->setShowLimit(5);
-//        $strategy->setTermBetweenShow(24 * 3600);
-        $strategy->setTermBetweenShow(1*60);
+        $strategy->setTermBetweenShow(24 * 3600);
+//        $strategy->setTermBetweenShow(1*60);
         $strategy->setTermControlSide(ShowStrategyInterface::CONTROL_SIDE_CLIENT);
 
         $this->channels['onsite']->putNotification($subscriber, $message, [

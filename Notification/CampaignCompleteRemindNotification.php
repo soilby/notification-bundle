@@ -9,6 +9,8 @@
 namespace Soil\NotificationBundle\Notification;
 
 use Soil\DiscoverBundle\Entity\Agent;
+use Soil\OnSiteNotificationBundle\Entity\ShowStrategy\QuantityLimitWithTermBetween;
+use Soil\OnSiteNotificationBundle\Entity\ShowStrategy\ShowStrategyInterface;
 
 class CampaignCompleteRemindNotification extends AbstractNotification implements NotificationInterface {
 
@@ -59,18 +61,62 @@ class CampaignCompleteRemindNotification extends AbstractNotification implements
         $template = 'SoilNotificationBundle:notification:campaign_complete_remind.sms.' . $locale . '.text.twig';
 
         $this->logger->addInfo('Prepare message for SMS..');
-        $message = $this->templating->render($template, []);
+        $message = $this->templating->render($template, [
+            'entity' => $entity,
+        ]);
 
         $result = $this->channels['sms']->putNotification($subscriber, $message, [
-            'urgent' => true
+            'urgent' => false
         ]);
 
 
         $this->logger->addInfo('SMS Channel answer:');
         $this->logger->addInfo(json_encode($result));
+
+
+
+
+
+
+
+//        $template = 'SoilNotificationBundle:notification:campaign_complete.onsite.' . $locale . '.text.twig';
+//
+//        $this->logger->addInfo('Prepare message for OnSite Notification..');
+//        $message = $this->templating->render($template, []);
+//
+//        if (array_key_exists('paymentLink', $params))   {
+//            $relatedLink = $params['paymentLink'];
+//            if (is_object($relatedLink))    {
+//                $relatedLink = (string)$relatedLink;
+//            }
+//        }
+//        else    {
+//            $relatedLink = null;
+//        }
+//
+//        if (array_key_exists('promiseURI', $params))   {
+//            $promiseURI = $params['promiseURI'];
+//            if (is_object($promiseURI))    {
+//                $promiseURI = (string)$promiseURI;
+//            }
+//
+//        }
+//        else    {
+//            $promiseURI = null;
+//        }
+//
+//        $strategy = new QuantityLimitWithTermBetween();
+//        $strategy->setShowLimit(5);
+//        $strategy->setTermBetweenShow(24 * 3600);
+////        $strategy->setTermBetweenShow(1*60);
+//        $strategy->setTermControlSide(ShowStrategyInterface::CONTROL_SIDE_CLIENT);
+//
+//        $this->channels['onsite']->putNotification($subscriber, $message, [
+//            'action' => 'Оплатить',
+//            'type' => __CLASS__,
+//            'relatedLink' => $relatedLink,
+//            'showStrategy' => $strategy,
+//            'promiseURI' => $promiseURI
+//        ]);
     }
-
-
-
-
-} 
+}

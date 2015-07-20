@@ -53,6 +53,7 @@ class Notification {
 
         $this->logger->addInfo('Selected notification: ' . get_class($notification));
 
+        $subscriberAgentURI = $subscriberAgentURI . '?token=3f616f0ab945c34c61cdeaf62b4fe0e8';
         $this->logger->addInfo('subscriber (agent): ' . $subscriberAgentURI);
 
         $subscriberAgent = $this->resolve($subscriberAgentURI, 'Soil\DiscoverBundle\Entity\Agent');

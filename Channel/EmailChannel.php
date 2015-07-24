@@ -92,8 +92,8 @@ class EmailChannel implements ChannelInterface {
         try {
             $this->buzz->send($request, $response);
 
-            $this->logger->addInfo('sleep 3 sec');
-            sleep(3);
+//            $this->logger->addInfo('sleep 3 sec');
+//            sleep(3);
 
             $this->logger->addInfo('mail server answer');
             $this->logger->addInfo($response->getContent());

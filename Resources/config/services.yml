@@ -60,6 +60,17 @@ services:
             - { name: monolog.logger, channel: queue }
 
 
+    soil_notification.notification.comments_digest_remind:
+        class: Soil\NotificationBundle\Notification\CommentsDigestNotification
+        arguments: [@templating]
+        calls:
+            - [addChannel, [email, @soil_notification.notification_channel.email_channel]]
+            - [setLogger, [@logger]]
+        tags:
+            - { name: soil_notification }
+            - { name: monolog.logger, channel: queue }
+
+
 
     soil_notification.notification_selector:
         class: Soil\NotificationBundle\Notification\Selector\NotificationSelector

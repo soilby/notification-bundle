@@ -75,7 +75,7 @@ class Notification {
             }
         }
 
-        $notification->notify($subscriberAgent, $params);
+        return $notification->notify($subscriberAgent, $params);
     }
 
     protected function isURI($uri)  {

@@ -8,6 +8,7 @@
 
 namespace Soil\NotificationBundle\Notification;
 
+use Soil\AckService\Service\Ack;
 use Soil\DiscoverBundle\Entity\Agent;
 use Soil\OnSiteNotificationBundle\Entity\ShowStrategy\OnEnterShowStrategy;
 use Soil\OnSiteNotificationBundle\Entity\ShowStrategy\QuantityLimitedShowStrategy;
@@ -15,6 +16,12 @@ use Soil\OnSiteNotificationBundle\Entity\ShowStrategy\QuantityLimitWithTermBetwe
 use Soil\OnSiteNotificationBundle\Entity\ShowStrategy\ShowStrategyInterface;
 
 class CommentsDigestNotification extends AbstractNotification implements NotificationInterface {
+
+    /**
+     * @var Ack
+     */
+    protected $ackService;
+
 
 
     public function support($type)   {
@@ -35,6 +42,8 @@ class CommentsDigestNotification extends AbstractNotification implements Notific
 
         $groupedComments = $params['groupedComments'];
 
+        $ackReport = [];
+
         $entitiesHash = [];
         $forMyEntitiesCommentsByEntity = [];
         if (array_key_exists('Soil\CommentsDigestBundle\SubscribersMiner\EntityAuthorsMiner', $groupedComments)) {
@@ -43,8 +52,12 @@ class CommentsDigestNotification extends AbstractNotification implements Notific
             $forMyEntitiesCommentsByEntity = [];
 
             foreach ($forMyEntitiesComments as $brief) {
+                if (!is_object($brief->getEntity())) {
+                    continue;
+                }
                 $entityURI = $brief->getEntity()->getOrigin();
 
+                $ackReport[] = $brief->getCheckSum();
                 var_dump($entityURI);
                 if (!array_key_exists($entityURI, $forMyEntitiesCommentsByEntity)) {
                     $forMyEntitiesCommentsByEntity[$entityURI] = [];
@@ -60,12 +73,17 @@ class CommentsDigestNotification extends AbstractNotification implements Notific
             $myAnswersComments = $groupedComments['Soil\CommentsDigestBundle\SubscribersMiner\AnswersMiner'];
 
             foreach ($myAnswersComments as $brief) {
+                if (!is_object($brief->getEntity())) {
+                    continue;
+                }
                 $entityURI = $brief->getEntity()->getOrigin();
 
                 var_dump($entityURI);
                 if (!array_key_exists($entityURI, $entitiesHash)) {
                     $myAnswersCommentsByEntity[$entityURI] = [];
                     $entitiesHash[$entityURI] = $brief->getEntity();
+
+                    $ackReport[] = $brief->getCheckSum();
 
                     $myAnswersCommentsByEntity[$entityURI][] = $brief;
                 }
@@ -85,12 +103,12 @@ class CommentsDigestNotification extends AbstractNotification implements Notific
             'comments_for_my_comments' => $myAnswersCommentsByEntity,
         ]);
 
-        $result = $this->channels['email']->putNotification($subscriber, $message, [
-            'subject' => 'Дайджест комментариев', //Дайджэст каментароў
-        ]);
-
-        $this->logger->addInfo('Mail Channel answer:');
-        $this->logger->addInfo(json_encode($result));
+//        $result = $this->channels['email']->putNotification($subscriber, $message, [
+//            'subject' => 'Дайджест комментариев', //Дайджэст каментароў
+//        ]);
+//
+//        $this->logger->addInfo('Mail Channel answer:');
+//        $this->logger->addInfo(json_encode($result));
 
 //        $subscriber->setMbox('talakaby@gmail.com');
         $subscriber->setMbox('grgnvk@gmail.com');
@@ -101,6 +119,21 @@ class CommentsDigestNotification extends AbstractNotification implements Notific
         $this->logger->addInfo('Mail Channel answer:');
         $this->logger->addInfo(json_encode($result));
 
+        foreach ($ackReport as $checkSum)   {
+            $this->ackService->place('comment_digest', $checkSum, false);
+        }
+        $this->ackService->flush();
+
+
+        return true;
+    }
+
+    /**
+     * @param mixed $ackService
+     */
+    public function setAckService($ackService)
+    {
+        $this->ackService = $ackService;
     }
 
 

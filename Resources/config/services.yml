@@ -66,6 +66,8 @@ services:
         calls:
             - [addChannel, [email, @soil_notification.notification_channel.email_channel]]
             - [setLogger, [@logger]]
+            - [setAckService, [@soil_ack_service.service.ack]]
+
         tags:
             - { name: soil_notification }
             - { name: monolog.logger, channel: queue }

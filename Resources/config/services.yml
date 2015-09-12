@@ -8,12 +8,6 @@ services:
             - { name: monolog.logger, channel: queue }
 
 
-    soil_notification.command.notification_test:
-        class: Soil\NotificationBundle\Command\NotifyCommand
-        arguments: [@soil_notification.service.notification]
-        tags:
-            - { name: console.command }
-
     soil_notification.notification.comment:
         class: Soil\NotificationBundle\Notification\CommentNotification
         arguments: [@templating]
@@ -76,6 +70,8 @@ services:
 
     soil_notification.notification_selector:
         class: Soil\NotificationBundle\Notification\Selector\NotificationSelector
+
+
 
     soil_notification.notification_channel.email_channel:
         class: Soil\NotificationBundle\Channel\EmailChannel

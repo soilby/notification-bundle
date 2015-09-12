@@ -41,6 +41,14 @@ class AbstractNotification {
         $this->channels[$channelName] = $channel;
     }
 
+    /**
+     * @return \Soil\NotificationBundle\Channel\ChannelInterface[]
+     */
+    public function getChannels()
+    {
+        return $this->channels;
+    }
+
 
     public function setLogger($logger)  {
         $this->logger = $logger;

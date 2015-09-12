@@ -1,0 +1,7 @@
+soil_notification_test:
+    path:     /test/{notificationType}/{flag}
+    defaults:
+        _controller: soil_notification.controller.notification_test_controller:outputAction
+        expected_class: false
+        notificationType: "NewIdeaNotification"
+        flag: "no-flag"

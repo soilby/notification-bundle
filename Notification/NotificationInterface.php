@@ -16,4 +16,8 @@ interface NotificationInterface {
     public function support($type);
 
     public function notify(Agent $agent, $params);
+
+    public function addChannel($channelName, $channel);
+
+    public function getChannels();
 } 

@@ -91,9 +91,43 @@ class CommentsDigestNotification extends AbstractNotification implements Notific
             }
         }
 
+
+        $importantEntitiesCommentsByEntity = [];
+        if (array_key_exists('Soil\CommentsDigestBundle\SubscribersMiner\ImportantForMeEntitiesMiner', $groupedComments)) {
+            $importantEntitiesComments = $groupedComments['Soil\CommentsDigestBundle\SubscribersMiner\ImportantForMeEntitiesMiner'];
+
+            foreach ($importantEntitiesComments as $brief) {
+                if (!is_object($brief->getEntity())) {
+                    continue;
+                }
+                $entityURI = $brief->getEntity()->getOrigin();
+
+                var_dump($entityURI);
+                if (!array_key_exists($entityURI, $entitiesHash)) {
+                    $importantEntitiesCommentsByEntity[$entityURI] = [];
+                    $entitiesHash[$entityURI] = $brief->getEntity();
+
+                    $ackReport[] = $brief->getCheckSum();
+
+                    $importantEntitiesCommentsByEntity[$entityURI][] = $brief;
+                }
+
+            }
+        }
+
         $namespaceDecoder = [
             'talidea' => 'Идея'
         ];
+
+        if (
+            count($forMyEntitiesCommentsByEntity) +
+            count($myAnswersCommentsByEntity) +
+            count($importantEntitiesCommentsByEntity) === 0
+        ) {
+            $this->logger->warning('Nothing to notify');
+
+            return false;
+        }
 
         $message = $this->templating->render($template, [
             'namespaceDecoder' => $namespaceDecoder,
@@ -101,23 +135,27 @@ class CommentsDigestNotification extends AbstractNotification implements Notific
             'entitiesHash' => $entitiesHash,
             'comments_for_my_entities' => $forMyEntitiesCommentsByEntity,
             'comments_for_my_comments' => $myAnswersCommentsByEntity,
+            'comments_important_for_me_entities' => $importantEntitiesCommentsByEntity,
         ]);
 
-//        $result = $this->channels['email']->putNotification($subscriber, $message, [
-//            'subject' => 'Дайджест комментариев', //Дайджэст каментароў
-//        ]);
+//        $this->logger->addAlert('SENT');
+//        $this->logger->addAlert($message);
 //
-//        $this->logger->addInfo('Mail Channel answer:');
-//        $this->logger->addInfo(json_encode($result));
-
-//        $subscriber->setMbox('talakaby@gmail.com');
-        $subscriber->setMbox('grgnvk@gmail.com');
         $result = $this->channels['email']->putNotification($subscriber, $message, [
-            'subject' => 'Дайджест комментариев ' . $email,
+            'subject' => 'Дайджест комментариев', //Дайджэст каментароў
         ]);
 
         $this->logger->addInfo('Mail Channel answer:');
         $this->logger->addInfo(json_encode($result));
+
+//        $subscriber->setMbox('talakaby@gmail.com');
+//        $subscriber->setMbox('grgnvk@gmail.com');
+//        $result = $this->channels['email']->putNotification($subscriber, $message, [
+//            'subject' => 'Дайджест комментариев ' . $email,
+//        ]);
+//
+//        $this->logger->addInfo('Mail Channel answer:');
+//        $this->logger->addInfo(json_encode($result));
 
         foreach ($ackReport as $checkSum)   {
             $this->ackService->place('comment_digest', $checkSum, false);

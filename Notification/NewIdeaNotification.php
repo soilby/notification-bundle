@@ -21,13 +21,17 @@ class NewIdeaNotification extends AbstractNotification implements NotificationIn
         return $type === 'NewIdeaNotification';
     }
 
+    public function getTestParams() {
+
+    }
+
     public function notify(Agent $subscriber, $params)
     {
         $this->logger->addInfo('New Idea notify...');
 
         $email = $subscriber->getEmail();
 
-        $this->logger->addInfo('Process campaign complete notification for mailbox ' . $subscriber->getDisplayName());
+        $this->logger->addInfo('Process new idea notification for mailbox ' . $subscriber->getDisplayName());
 
         $locale = $subscriber->getLocale();
         $locale = 'ru';

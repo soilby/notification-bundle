@@ -84,17 +84,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
                 {% if comments_for_my_comments %}
                     <tr>
                         <td valign="top">
@@ -104,6 +93,65 @@
                         </td>
                     </tr>
                 {% for entityURI, commentBriefs in comments_for_my_comments %}
+                    <tr>
+                        <td style="padding: 6px 60px;">
+                            <table border="0" cellspacing="0" cellpadding="0">
+                                <tbody>
+                                <tr>
+                                    <td style="width:70px;position:relative;" rowspan="3" valign="top">
+                                        {% if entitiesHash[entityURI].avatar is defined %}
+                                        <img src="{{ entitiesHash[entityURI].avatar }}" />
+                                        {% endif %}
+                                    </td>
+                                    <td style="width:389px;background:url('http://www.talaka.by/assets/img/mail/comment-top.png');height:10px;">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="background:url('http://www.talaka.by/assets/img/mail/comment-body.png');">
+                                        <table border="0" cellspacing="0" cellpadding="0">
+                                            <tbody>
+                                            <tr>
+                                                <td style="width:300px; padding:2px 5px 10px 20px;font-size:13px;font-family:Verdana;">
+                                                    <a href="{{ entityURI }}">
+
+                                                        {{ namespaceDecoder[entitiesHash[entityURI].getRdfNamespace()] }}:
+
+                                                        {{ entitiesHash[entityURI].name }}
+                                                    </a>
+                                                </td>
+                                                <td valign="top" style="padding-top:2px; font-size:12px;color:#808080;font-family: Verdana;font-style:italic;">
+                                                    {{ commentBriefs | length }} новых
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="height:10px;background:url('http://www.talaka.by/assets/img/mail/comment-bottom.png');"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
+                {% endif %}
+
+
+
+
+
+                {% if comments_important_for_me_entities %}
+                    <tr>
+                        <td valign="top">
+                            <h3 style="font-family:Verdana;text-align:center;padding:30px 30px 10px 30px;">
+                                Новые комментарии в важных для меня идеях и проектах
+                            </h3>
+                        </td>
+                    </tr>
+                {% for entityURI, commentBriefs in comments_important_for_me_entities %}
                     <tr>
                         <td style="padding: 6px 60px;">
                             <table border="0" cellspacing="0" cellpadding="0">

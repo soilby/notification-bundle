@@ -1,0 +1,23 @@
+services:
+    soil_notification.command.notification_test:
+        class: Soil\NotificationBundle\Command\NotifyCommand
+        arguments: [@soil_notification.service.notification]
+        tags:
+            - { name: console.command }
+
+    soil_notification.notification_selector_test:
+        class: Soil\NotificationBundle\Notification\Selector\NotificationSelectorTest
+        parent: soil_notification.notification_selector
+        calls:
+            - [setTestChannel, [@soil_notification.notification_channel.test_channel]]
+
+    soil_notification.notification_channel.test_channel:
+        class: Soil\NotificationBundle\Channel\TestChannel
+        calls:
+            - [setLogger, [@logger]]
+
+
+    soil_notification.controller.notification_test_controller:
+        class: Soil\NotificationBundle\Controller\NotificationTestController
+        arguments: [@soil_notification.service.notification, @soil_notification.notification_selector_test]
+

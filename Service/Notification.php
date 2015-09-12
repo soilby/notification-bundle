@@ -15,7 +15,6 @@ use EasyRdf\RdfNamespace;
 use Monolog\Logger;
 use Soil\DiscoverBundle\Entity\Agent;
 use Soil\DiscoverBundle\Service\Resolver;
-use Soil\DiscoverBundle\Services\Discoverer;
 use Soil\NotificationBundle\Notification\Selector\NotificationSelector;
 use Soil\NotificationBundle\Service\Exception\NotificationFail;
 
@@ -107,6 +106,15 @@ class Notification {
     public function setLogger($logger)  {
         $this->logger = $logger;
     }
+
+    /**
+     * @param NotificationSelector $notificationSelector
+     */
+    public function setNotificationSelector($notificationSelector)
+    {
+        $this->notificationSelector = $notificationSelector;
+    }
+
 
 
 

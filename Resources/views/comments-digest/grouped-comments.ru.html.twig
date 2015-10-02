@@ -199,6 +199,10 @@
                 {% endif %}
 
 
+                {% if forum_topics %}
+                    {% include ('SoilNotificationBundle:comments-digest:forum-topics.ru.html.twig') %}
+                {% endif %}
+
                 {#<tr>#}
                     {#<td align="center" style="padding-bottom: 20px;padding-top:20px; font-size:11px;font-family:Verdana;">#}
                         {#<a href="{{unsubscribe}}" style="color:#000; ">Отписаться</a> от всех новых комментариев этого {{type2}}#}

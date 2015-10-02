@@ -115,13 +115,39 @@ class CommentsDigestNotification extends AbstractNotification implements Notific
             }
         }
 
+        $forumTopics = [];
+        if (array_key_exists('Soil\CommentsDigestBundle\SubscribersMiner\ForumNewPostMiner', $groupedComments)) {
+            $topics = $groupedComments['Soil\CommentsDigestBundle\SubscribersMiner\ForumNewPostMiner'];
+
+            foreach ($topics as $brief) {
+                if (!is_object($brief->getEntity())) {
+                    continue;
+                }
+                $entityURI = $brief->getEntity()->getOrigin();
+
+                var_dump($entityURI);
+                if (!array_key_exists($entityURI, $entitiesHash)) {
+                    $forumTopics[$entityURI] = [];
+                    $entitiesHash[$entityURI] = $brief->getEntity();
+
+//                    $ackReport[] = $brief->getCheckSum();
+
+                    $forumTopics[$entityURI][] = $brief;
+                }
+            }
+        }
+
         $namespaceDecoder = [
-            'talidea' => 'Идея'
+            'talidea' => 'Идея',
+            'talblog' => 'Блог',
+            'talforumtopic' => 'Форум'
+
         ];
 
         if (
             count($forMyEntitiesCommentsByEntity) +
             count($myAnswersCommentsByEntity) +
+            count($forumTopics) +
             count($importantEntitiesCommentsByEntity) === 0
         ) {
             $this->logger->warning('Nothing to notify');
@@ -136,7 +162,9 @@ class CommentsDigestNotification extends AbstractNotification implements Notific
             'comments_for_my_entities' => $forMyEntitiesCommentsByEntity,
             'comments_for_my_comments' => $myAnswersCommentsByEntity,
             'comments_important_for_me_entities' => $importantEntitiesCommentsByEntity,
+            'forum_topics' => $forumTopics
         ]);
+
 
 //        $this->logger->addAlert('SENT');
 //        $this->logger->addAlert($message);
@@ -158,7 +186,9 @@ class CommentsDigestNotification extends AbstractNotification implements Notific
 //        $this->logger->addInfo(json_encode($result));
 
         foreach ($ackReport as $checkSum)   {
-            $this->ackService->place('comment_digest', $checkSum, false);
+            if ($checkSum) {
+                $this->ackService->place('comment_digest', $checkSum, false);
+            }
         }
         $this->ackService->flush();
 

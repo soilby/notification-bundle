@@ -4,6 +4,7 @@ services:
         arguments: [@soil_notification.notification_selector, @soil_discover.service.resolver]
         calls:
             - [setLogger, [@logger]]
+            - [setProductionMode, [%production%]]
         tags:
             - { name: monolog.logger, channel: queue }
 

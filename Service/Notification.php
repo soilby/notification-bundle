@@ -36,6 +36,11 @@ class Notification {
      */
     protected $resolver;
 
+    /**
+     * @var bool
+     */
+    protected $productionMode = false;
+
     public function __construct($notificationSelector, $resolver)  {
         $this->notificationSelector = $notificationSelector;
         $this->resolver = $resolver;
@@ -56,6 +61,9 @@ class Notification {
         $this->logger->addInfo('subscriber (agent): ' . $subscriberAgentURI);
 
         $subscriberAgent = $this->resolve($subscriberAgentURI, 'Soil\DiscoverBundle\Entity\Agent');
+        if ($subscriberAgent->getEnvironment() !== 'production')    {
+//            $this->logger->addInfo('Skip notification for development user');
+        }
 
         foreach ($params as $paramName => &$paramValue)    {
 
@@ -113,6 +121,22 @@ class Notification {
     public function setNotificationSelector($notificationSelector)
     {
         $this->notificationSelector = $notificationSelector;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isProductionMode()
+    {
+        return $this->productionMode;
+    }
+
+    /**
+     * @param boolean $productionMode
+     */
+    public function setProductionMode($productionMode)
+    {
+        $this->productionMode = $productionMode;
     }
 
 

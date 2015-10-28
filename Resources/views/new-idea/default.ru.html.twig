@@ -1,5 +1,7 @@
+{% block head %}
 <h1>5 вещей, которые
 нужно знать автору идеи на Talaka.by</h1>
+{% endblock %}
 <p align="center" style="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 115%; page-break-before: auto; page-break-after: auto">
 <br>
 </p>
@@ -44,20 +46,28 @@
 канал связи со своими сторонниками -
 публикация комментария с важной
 информацией приведет к уведомлению сторонников через емэйл.</p>
+
+{% block forum %}
 <p style="margin-left: 1.27cm; margin-bottom: 0cm; line-height: 115%; page-break-before: auto; page-break-after: auto">
 Если у вас есть замечания и предложения
 относительно функционала Инкубатора
 идей, то они принимаются на <font color="#1155cc"><u><a href="http://www.talaka.by/forum">форуме</a><a href="http://www.talaka.by/forum">
 </a><a href="http://www.talaka.by/forum">Талаки</a></u></font>.</p>
+{% endblock %}
+
 <p style="margin-bottom: 0cm; line-height: 115%; page-break-before: auto; page-break-after: auto">
 <br>
 </p>
 <p style="margin-bottom: 0cm; line-height: 115%; page-break-before: auto; page-break-after: auto">
 <font size="3" style="font-size: 12pt"><b>3. Советы по продвижению ваших идей</b></font></p>
+
+{% block advice_head %}
 <p style="margin-left: 1.27cm; margin-bottom: 0cm; line-height: 115%; page-break-before: auto; page-break-after: auto">
     Конечно, на платформе Talaka.by обитают небезразличные люди, которые готовы помочь вам советом или даже присоединиться к реализации идеи. Однако основную движущую силу, которая способна реализовать любую идею без денежных вливаний - составляют люди. Очень важно достучаться до тех, кому важна реализация вашей идеи.
     Мы подготовили несколько универсальных рекомендаций по продвижению ваших идей:
 </p>
+{% endblock %}
+
     <ul>
 	<li><p style="margin-bottom: 0cm; line-height: 115%; page-break-before: auto; page-break-after: auto">
 	Как можно точнее опишите ключевые поля
@@ -75,6 +85,7 @@
 	<li>
             <p style="margin-bottom: 0cm; line-height: 115%; page-break-before: auto; page-break-after: auto">
                 Собирайте не “лайки”, а реальных сторонников! Пригласите своих друзей и знакомых поддержать вашу идею. Возможно, для кого-то из них реально важно решение обозначенной проблемы.
+                {% block director_recomendations %}
                 Рекомендации от нашего креативного директора на форуме,
                 <font color="#1155cc">
                     <u>
@@ -83,6 +94,7 @@
                         </a>
                     </u>
                 </font>
+                {% endblock %}
             </p>
 	</li>
 	<li><p style="margin-bottom: 0cm; line-height: 115%; page-break-before: auto; page-break-after: auto">
@@ -99,9 +111,15 @@
 	то объединившись, привлечете в команду
 	больше участников-реализаторов и
 	повысите вероятность успеха вашего
-	проекта. Пример
-	похожих идей: <a href="http://www.talaka.by/ideas/86"><font color="#1155cc"><u>вот</u></font></a>
-	и <a href="http://www.talaka.by/ideas/95"><font color="#1155cc"><u>вот</u></font></a>.</p>
+	проекта.
+    {% block the_same_example %}
+        Пример
+        похожих идей: <a href="http://www.talaka.by/ideas/86"><font color="#1155cc"><u>вот</u></font></a>
+        и <a href="http://www.talaka.by/ideas/95"><font color="#1155cc"><u>вот</u></font></a>.
+    {% endblock %}
+
+        </p>
+    </li>
     </ul>
 <p style="margin-bottom: 0cm; line-height: 115%; page-break-before: auto; page-break-after: auto">
 <br>
@@ -112,16 +130,24 @@
 
 
     Как только вы переходите от обсуждения идеи в Интернет к первым шагам по её воплощению, вы имеете возможность привлечь внимание СМИ!
+    {% block smi_ducks %}
     Так, например, сразу несколько СМИ написали о субботнике по очистке небольшого водоема, который проходил в рамках реализации идеи
     <a href="http://www.talaka.by/ideas/20">“Спасение уток”</a>
-    (ссылки в комментариях). С таким стартовым потенциалом вы легко перейдете к следующей фазе реализации - оформлению полноценного проекта и сбору средств методом краудфандинга (в случае необходимости).
+    (ссылки в комментариях).
+    {% endblock %}
+
+    С таким стартовым потенциалом вы легко перейдете к следующей фазе реализации - оформлению полноценного проекта и сбору средств методом краудфандинга (в случае необходимости).
 
 </p>
 <p style="margin-bottom: 0cm; line-height: 115%; page-break-before: auto; page-break-after: auto">
 <br>
 </p>
+
+{% block community_header %}
 <p style="margin-bottom: 0cm; line-height: 115%; page-break-before: auto; page-break-after: auto">
 <font size="3" style="font-size: 12pt"><b>5. Вливайтесь в сообщество Талаки!</b></font></p>
+{% endblock %}
+
 <p style="margin-left: 1.27cm; margin-bottom: 0cm; line-height: 115%; page-break-before: auto; page-break-after: auto">
     Не только собирайте советы и поддержку от сообщества, но и делитесь своими компетенциями. Благодаря кооперации выигрывают все авторы идей! В результате каждый не только сможет реализовать свою идею, но и создать новые совместные проекты. На платформе уже есть несколько проектов родившихся как результат синергии сразу нескольких авторов.
 </p>
@@ -129,7 +155,11 @@
 <p style="margin-bottom: 0cm; line-height: 115%; page-break-before: auto; page-break-after: auto">
 <br>
 </p>
+
+{% block regards %}
 <p style="margin-bottom: 0cm; line-height: 115%; page-break-before: auto; page-break-after: auto">
 С уважением и старанием для вас,
 </p><p style="margin-bottom: 0cm; line-height: 115%; page-break-before: auto; page-break-after: auto">
 команда платформы Talaka.by</p>
+
+{% endblock %}

@@ -130,7 +130,7 @@ class CommentsDigestNotification extends AbstractNotification implements Notific
                     $forumTopics[$entityURI] = [];
                     $entitiesHash[$entityURI] = $brief->getEntity();
 
-//                    $ackReport[] = $brief->getCheckSum();
+                    $ackReport[] = $brief->getCheckSum();
 
                     $forumTopics[$entityURI][] = $brief;
                 }

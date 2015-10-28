@@ -33,16 +33,42 @@ class NewIdeaNotification extends AbstractNotification implements NotificationIn
 
         $this->logger->addInfo('Process new idea notification for mailbox ' . $subscriber->getDisplayName());
 
+        $host = array_key_exists('host', $params) ? $params['host'] : 'default';
+
         $locale = $subscriber->getLocale();
         $locale = 'ru';
-        $template = 'SoilNotificationBundle:new-idea:new-idea.' . $locale . '.html.twig';
+        $template = 'SoilNotificationBundle:new-idea:' . $host . '.' . $locale . '.html.twig';
 
-        $message = $this->templating->render($template, [
-            'subscriber' => $subscriber,
-        ]);
+        try {
+            $message = $this->templating->render($template, [
+                'subscriber' => $subscriber,
+            ]);
+        }
+        catch(\Exception $e)    {
+            $this->logger->addError((string) $e);
+            $this->logger->addError('Problem with rendering template ' . $template . '. Try default..');
+
+
+            $template = 'SoilNotificationBundle:new-idea:default.' . $locale . '.html.twig';
+            $message = $this->templating->render($template, [
+                'subscriber' => $subscriber,
+            ]);
+        }
+
+
+        switch ($host)  {
+            case 'cpumoscow.ru';
+            case 'www.saratovidea.ru';
+                $topic = '5 вещей, которые нужно знать автору идеи';
+                break;
+
+            default:
+                $topic = '5 вещей, которые нужно знать автору идеи на Talaka.by';
+                break;
+        }
 
         $result = $this->channels['email']->putNotification($subscriber, $message, [
-            'subject' => '5 вещей, которые нужно знать автору идеи на Talaka.by',
+            'subject' => $host
         ]);
 
         $this->logger->addInfo('Mail Channel answer:');

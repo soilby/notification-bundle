@@ -68,7 +68,8 @@ class NewIdeaNotification extends AbstractNotification implements NotificationIn
         }
 
         $result = $this->channels['email']->putNotification($subscriber, $message, [
-            'subject' => $host
+            'subject' => $topic,
+            'host' => $host
         ]);
 
         $this->logger->addInfo('Mail Channel answer:');

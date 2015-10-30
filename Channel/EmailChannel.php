@@ -68,6 +68,25 @@ class EmailChannel implements ChannelInterface {
             $writer->text($options['subject']);
         $writer->endElement();
 
+        if (array_key_exists('host', $options)) {
+            switch ($options['host'])   {
+                case 'www.saratovidea.ru':
+                    $from = 'no-reply@saratovidea.ru';
+                    break;
+                case 'cpumoscow.ru':
+                    $from = 'no-reply@cpumoscow.ru';
+                    break;
+                case 'www.talaka.by';
+                default;
+                    $from = 'poshta@talaka.by';
+                    break;
+            }
+
+            $writer->startElement('from');
+                $writer->text($from);
+            $writer->endElement();
+        }
+
         $writer->startElement('recipient');
         $writer->startElement('mbox');
         $writer->text($email);

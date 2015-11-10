@@ -93,3 +93,9 @@ services:
         arguments: [@soil_on_site_notification.service.notification_manager]
         calls:
             - [setLogger, [@logger]]
+
+    soil_notification.twig_extension:
+        class: Soil\NotificationBundle\Twig\PrintEntityTypeExtension
+        public: false
+        tags:
+            - { name: twig.extension }

@@ -27,7 +27,7 @@
                                 <td style="width:300px; padding:2px 5px 10px 20px;font-size:13px;font-family:Verdana;">
                                     <a href="{{ entityURI }}">
 
-                                        {{ namespaceDecoder[entitiesHash[entityURI].getRdfNamespace()] }}:
+                                        {{ entitiesHash[entityURI] | printEntityType }}
 
                                         {{ entitiesHash[entityURI].name }}
                                     </a>

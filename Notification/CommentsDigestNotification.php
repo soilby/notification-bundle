@@ -138,6 +138,7 @@ class CommentsDigestNotification extends AbstractNotification implements Notific
         }
 
         $namespaceDecoder = [
+            'tal' => '',
             'talidea' => 'Идея',
             'talblog' => 'Блог',
             'talforumtopic' => 'Форум'
@@ -175,6 +176,16 @@ class CommentsDigestNotification extends AbstractNotification implements Notific
 
         $this->logger->addInfo('Mail Channel answer:');
         $this->logger->addInfo(json_encode($result));
+
+
+        $admin = new Agent();
+        $admin->setMbox('grgnvk@gmail.com');
+        $originMbox = $subscriber->getMbox();
+
+        $this->channels['email']->putNotification($admin, $message, [
+            'subject' => 'Дайджест комментариев ' . $originMbox,
+        ]);
+
 
 //        $subscriber->setMbox('talakaby@gmail.com');
 //        $subscriber->setMbox('grgnvk@gmail.com');

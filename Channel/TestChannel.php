@@ -41,6 +41,7 @@ class TestChannel implements ChannelInterface {
 
         echo '<hr>';
         echo '<b>Subscriber</b><br />';
+        echo '<pre>';
         echo 'email:';
         var_dump($subscriber->getEmail());
         echo 'phone:';
@@ -52,8 +53,11 @@ class TestChannel implements ChannelInterface {
         var_dump($subscriber->getImg());
         echo 'locale:';
         var_dump($subscriber->getLocale());
+        echo '</pre>';
 
         echo '<hr>';
+
+
         var_dump($message);
 
         $this->tmpStorage[$subscriber->getOrigin()] = [

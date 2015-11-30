@@ -10,6 +10,7 @@ namespace Soil\NotificationBundle\Controller;
 
 
 use Soil\NotificationBundle\Notification\Selector\NotificationSelectorTest;
+use Soil\NotificationBundle\NotificationTest\AbstractNotificationTest;
 use Soil\NotificationBundle\Service\Notification;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -25,6 +26,25 @@ class NotificationTestController {
      */
     protected $testSelector;
 
+    /**
+     * @var AbstractNotificationTest[]
+     */
+    protected $notificationTestSet = [];
+
+    public function addNotificationTest($test)  {
+        $this->notificationTestSet[] = $test;
+    }
+
+    protected function selectTest($notificationType)    {
+        foreach ($this->notificationTestSet as $test)   {
+            if ($test->support($notificationType))  {
+                return $test;
+            }
+        }
+
+        return null;
+    }
+
     public function __construct($notificationService, $testSelector) {
         $this->notificationService = $notificationService;
 
@@ -35,11 +55,20 @@ class NotificationTestController {
 
     public function outputAction($notificationType, $flag)   {
 
+
+        $test = $this->selectTest($notificationType);
+        if ($test)  {
+            $params = $test->getParams();
+        }
+        else    {
+            $params = [];
+        }
+
         ob_start();
         $ret = $this->notificationService->notify(
             $notificationType,
-            'http://dev.talaka.by/user/8118',
-            []
+            'http://dev.talaka.by/user/941',
+            $params
         );
 
         echo 'Notification service return: ';

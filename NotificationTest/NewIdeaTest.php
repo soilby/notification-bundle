@@ -16,8 +16,11 @@ class NewIdeaTest extends AbstractNotificationTest {
     protected $supportedChannels = ['email'];
 
 
+    public function support($type)   {
+        return $type === 'NewIdeaNotification';
+    }
 
-    protected function getParams()  {
+    public function getParams()  {
         return [];
     }
 

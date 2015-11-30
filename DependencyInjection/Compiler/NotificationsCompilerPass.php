@@ -34,5 +34,22 @@ class NotificationsCompilerPass implements CompilerPassInterface {
                 array(new Reference($id))
             );
         }
+
+
+
+
+        $definition = $container->getDefinition(
+            'soil_notification.controller.notification_test_controller'
+        );
+
+        $taggedServices = $container->findTaggedServiceIds(
+            'soil_notification_test'
+        );
+        foreach ($taggedServices as $id => $tags) {
+            $definition->addMethodCall(
+                'addNotificationTest',
+                array(new Reference($id))
+            );
+        }
     }
 } 

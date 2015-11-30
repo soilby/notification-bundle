@@ -21,3 +21,21 @@ services:
         class: Soil\NotificationBundle\Controller\NotificationTestController
         arguments: [@soil_notification.service.notification, @soil_notification.notification_selector_test]
 
+    soil_notification.test.abstract:
+        class: Soil\NotificationBundle\NotificationTest\AbstractNotificationTest
+        abstract: true
+        arguments: [@soil_discover.service.resolver]
+
+    soil_notification.test.new_idea:
+        class: Soil\NotificationBundle\NotificationTest\NewIdeaTest
+        parent: soil_notification.test.abstract
+        tags:
+            - { name: soil_notification_test }
+
+
+    soil_notification.test.comments_digest:
+        class: Soil\NotificationBundle\NotificationTest\CommentDigestNotificationTest
+        parent: soil_notification.test.abstract
+        tags:
+            - { name: soil_notification_test }
+

@@ -14,45 +14,17 @@ use Soil\NotificationBundle\Notification\NotificationInterface;
 
 abstract class AbstractNotificationTest {
 
+    protected $resolver;
 
-    protected $supportedChannels = [];
-
-    /**
-     * @var NotificationInterface
-     */
-    protected $notification;
-
-    protected $templating;
-    protected $testChannel;
-
-    public function __construct($templating, $testChannel) {
-        $this->templating = $templating;
-        $this->testChannel = $testChannel;
-    }
-
-    protected function configureNotification()  {
-        foreach ($this->supportedChannels as $channel)  {
-            $this->notification->addChannel($channel, $this->testChannel);
-        }
-    }
-
-    public function output()   {
-        $this->configureNotification();
-
-        $this->notification->notify($agent, $params);
-        $params = $this->getParams();
-
+    public function __construct($resolver)  {
+        $this->resolver = $resolver;
     }
 
 
-    abstract protected function getParams();
+    abstract public function getParams();
 
-    /**
-     * @param NotificationInterface $notification
-     */
-    public function setNotification($notification)
-    {
-        $this->notification = $notification;
+    public function support($type)   {
+        return false;
     }
 
 

@@ -25,8 +25,6 @@ class CampaignCompleteNotification extends AbstractNotification implements Notif
     {
         $this->logger->addInfo('Campaign complete notify...');
 
-        $email = $subscriber->getEmail();
-
         $this->logger->addInfo('Process campaign complete notification for mailbox ' . $subscriber->getDisplayName());
 
         $entity = $params['entity'];

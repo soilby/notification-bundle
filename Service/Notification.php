@@ -61,10 +61,10 @@ class Notification {
         $this->logger->addInfo('subscriber (agent): ' . $subscriberAgentURI);
 
         $subscriberAgent = $this->resolve($subscriberAgentURI, 'Soil\DiscoverBundle\Entity\Agent');
-        if ($subscriberAgent->getEnvironment() !== 'production')    {
-            $this->logger->addInfo('Skip notification for development user');
-            return;
-        }
+    
+        $this->logger->addInfo('Environment: ' . $subscriberAgent->getEnvironment());
+        
+        
 
         foreach ($params as $paramName => &$paramValue)    {
 
@@ -81,6 +81,14 @@ class Notification {
                 $this->logger->addInfo('resolving..');
                 $paramValue = $this->resolve($paramValue, true);
             }
+        }
+
+
+        if ($subscriberAgent->getEnvironment() !== 'production') {
+            $this->logger->addInfo('Rewrite notification for development user to grgnvk@gmail.com');
+            $email = 'grgnvk@gmail.com';
+
+            $subscriberAgent->setMbox($email);
         }
 
         return $notification->notify($subscriberAgent, $params);

@@ -62,7 +62,8 @@ class Notification {
 
         $subscriberAgent = $this->resolve($subscriberAgentURI, 'Soil\DiscoverBundle\Entity\Agent');
         if ($subscriberAgent->getEnvironment() !== 'production')    {
-//            $this->logger->addInfo('Skip notification for development user');
+            $this->logger->addInfo('Skip notification for development user');
+            return;
         }
 
         foreach ($params as $paramName => &$paramValue)    {

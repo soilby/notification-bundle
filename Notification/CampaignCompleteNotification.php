@@ -47,10 +47,9 @@ class CampaignCompleteNotification extends AbstractNotification implements Notif
             $campaign = current($campaign);
         }
 
+        $frontEndCampaignURL = $campaign->get('schema:url');
 
-        $originURL = $campaign->getUri();
-
-        $baseURL = substr($originURL, 0, strpos($originURL, '/', 7)); //next slash after https://
+        $baseURL = substr($frontEndCampaignURL, 0, strpos($frontEndCampaignURL, '/', 7)); //next slash after https://
 
         $locale = $subscriber->getLocale();
 
@@ -62,7 +61,8 @@ class CampaignCompleteNotification extends AbstractNotification implements Notif
             'promiseSum' => $params['promiseSum'],
             'promiseDate' => $params['promiseDate'],
             'baseURL' => $baseURL,
-            'paymentLink' => $params['paymentLink']
+            'paymentLink' => $params['paymentLink'],
+            'frontEndCampaignURL' => $frontEndCampaignURL
         ]);
         
         $result = $this->channels['email']->putNotification($subscriber, $message, [

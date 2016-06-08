@@ -76,7 +76,7 @@ class Notification {
             $this->logger->addInfo('param value: ' . $stringRepresentation);
 
             if ($this->isURI($paramValue)) {
-                $this->logger->addInfo('resolving..');
+                $this->logger->addInfo('resolving.. ' . $notification->getParamsTypeVersion());
                 $paramValue = $this->resolve($paramValue, true, $notification->getParamsTypeVersion());
             }
         }

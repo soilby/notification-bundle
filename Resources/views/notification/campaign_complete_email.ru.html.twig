@@ -24,12 +24,12 @@
                             <tbody>
                             <tr>
                                 <td>
-                                    <a href="{{ entity.getUri() }}">
+                                    <a href="{{ frontEndCampaignURL }}">
                                         <img style="width: 300px;" src="{{ entity.get('schema:image') }}"/>
                                     </a>
                                 </td>
                                 <td valign="top" style="padding:16px 0 0 12px;">
-                                    <a href="{{ entity.getUri() }}" style="font-size:15px;color:#0059b2;font-family:Verdana;">{{ entity.get('schema:name') | raw }}</a>
+                                    <a href="{{ frontEndCampaignURL }}" style="font-size:15px;color:#0059b2;font-family:Verdana;">{{ entity.get('schema:name') | raw }}</a>
                                     <p style="font-size:13px;color:#333333;font-family:Verdana;">
                                         Кампания по сбору средств завершилась. Чтобы исполнить ваше обещание поддержки на сумму {{ promiseSum }} руб, пожалуйста, оплатите её
                                     </p>

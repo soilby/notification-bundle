@@ -15,6 +15,7 @@ use EasyRdf\RdfNamespace;
 use Monolog\Logger;
 use Soil\DiscoverBundle\Entity\Agent;
 use Soil\DiscoverBundle\Service\Resolver;
+use Soil\NotificationBundle\Notification\AbstractNotification;
 use Soil\NotificationBundle\Notification\Selector\NotificationSelector;
 use Soil\NotificationBundle\Service\Exception\NotificationFail;
 
@@ -64,22 +65,19 @@ class Notification {
     
         $this->logger->addInfo('Environment: ' . $subscriberAgent->getEnvironment());
         
-        
-
-        foreach ($params as $paramName => &$paramValue)    {
-
+        foreach ($params as $paramName => &$paramValue) {
+            
             if (is_scalar($paramValue)) { //for logging purpose
                 $stringRepresentation = (string)$paramValue;
-            }
-            else    {
+            } else {
                 $stringRepresentation = gettype($paramValue);
             }
 
             $this->logger->addInfo('param value: ' . $stringRepresentation);
 
-            if ($this->isURI($paramValue))  {
+            if ($this->isURI($paramValue)) {
                 $this->logger->addInfo('resolving..');
-                $paramValue = $this->resolve($paramValue, true);
+                $paramValue = $this->resolve($paramValue, true, $notification->getParamsTypeVersion());
             }
         }
 
@@ -99,9 +97,14 @@ class Notification {
     }
 
 
-    protected function resolve($uri, $expectEntity = null)  {
+    protected function resolve($uri, $expectEntity = null, $paramsTypeVersion = AbstractNotification::ENTITIES_V1)  {
         try {
-            $entity = $this->resolver->getEntityForURI($uri, $expectEntity);
+            if ($paramsTypeVersion === AbstractNotification::ENTITIES_V1) {
+                $entity = $this->resolver->getEntityForURI($uri, $expectEntity);
+            }
+            else    {
+                $entity = $this->resolver->getDocument($uri);
+            }
         }
         catch (\Exception $e)   {
             $this->logger->addCritical('Cannot resolve uri into entity ' . $uri);

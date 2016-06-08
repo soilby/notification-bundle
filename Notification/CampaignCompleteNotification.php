@@ -8,6 +8,8 @@
 
 namespace Soil\NotificationBundle\Notification;
 
+use EasyRdf\Graph;
+use EasyRdf\Resource;
 use Soil\DiscoverBundle\Entity\Agent;
 use Soil\OnSiteNotificationBundle\Entity\ShowStrategy\OnEnterShowStrategy;
 use Soil\OnSiteNotificationBundle\Entity\ShowStrategy\QuantityLimitedShowStrategy;
@@ -16,6 +18,7 @@ use Soil\OnSiteNotificationBundle\Entity\ShowStrategy\ShowStrategyInterface;
 
 class CampaignCompleteNotification extends AbstractNotification implements NotificationInterface {
 
+    protected $paramsTypeVersion = self::GRAPH_V1;
 
     public function support($type)   {
         return $type === 'CampaignCompleteNotification';
@@ -26,13 +29,26 @@ class CampaignCompleteNotification extends AbstractNotification implements Notif
         $this->logger->addInfo('Campaign complete notify...');
 
         $this->logger->addInfo('Process campaign complete notification for mailbox ' . $subscriber->getDisplayName());
+        
+        echo '<pre>';
 
+
+        /**
+         * @var $entity Graph
+         */
         $entity = $params['entity'];
 
-//        var_dump($entity->getImage()->getThumbnail());exit();
+
+        /**
+         * @var $campaign Resource[]
+         */
+        $campaign = $entity->allOfType('schema:Offer');
+        if ($campaign)  {
+            $campaign = current($campaign);
+        }
 
 
-        $originURL = $entity->getOrigin();
+        $originURL = $campaign->getUri();
 
         $baseURL = substr($originURL, 0, strpos($originURL, '/', 7)); //next slash after https://
 
@@ -42,14 +58,15 @@ class CampaignCompleteNotification extends AbstractNotification implements Notif
 
         $message = $this->templating->render($template, [
             'subscriber' => $subscriber,
-            'entity' => $entity,
+            'entity' => $campaign,
             'promiseSum' => $params['promiseSum'],
             'promiseDate' => $params['promiseDate'],
-            'baseURL' => $baseURL
+            'baseURL' => $baseURL,
+            'paymentLink' => $params['paymentLink']
         ]);
-
+        
         $result = $this->channels['email']->putNotification($subscriber, $message, [
-            'subject' => 'Оплата поддержки проекта' . ' ' . $entity->name,
+            'subject' => 'Оплата поддержки проекта' . ' ' . $campaign->get('schema:name'),
         ]);
 
         $this->logger->addInfo('Mail Channel answer:');

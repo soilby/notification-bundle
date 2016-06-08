@@ -39,3 +39,10 @@ services:
         tags:
             - { name: soil_notification_test }
 
+
+    soil_notification.test.campaign_complete:
+        class: Soil\NotificationBundle\NotificationTest\CampaignCompleteNotificationTest
+        parent: soil_notification.test.abstract
+        tags:
+            - { name: soil_notification_test }
+

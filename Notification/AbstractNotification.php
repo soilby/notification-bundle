@@ -16,6 +16,11 @@ use Symfony\Bridge\Twig\TwigEngine;
 
 class AbstractNotification {
 
+    const ENTITIES_V1 = 'entities_v1';
+    const GRAPH_V1 = 'graph_v1';
+    
+    protected $paramsTypeVersion = self::ENTITIES_V1;
+    
     /**
      * @var TwigEngine
      */
@@ -64,8 +69,10 @@ class AbstractNotification {
             }
         }
     }
-    
-    
 
+
+    public function getParamsTypeVersion()  {
+        return $this->paramsTypeVersion;
+    }
 
 }

@@ -55,7 +55,6 @@ class EmailChannel implements ChannelInterface {
 
 
     public function putNotification(Agent $subscriber, $message, $options) {
-
         $email = $subscriber->getEmail();
         $encodedMessage = base64_encode($message);
 
@@ -101,7 +100,10 @@ class EmailChannel implements ChannelInterface {
         $writer->endDocument();
 
         $s = $writer->outputMemory(true);
-
+//var_dump($this->mailGateway);
+//echo $s;
+//        exit;
+        
 
         $request = new Request('POST', $this->mailGateway);
 //        $request = new Request('POST', '/send', 'sendmail.talaka.by');

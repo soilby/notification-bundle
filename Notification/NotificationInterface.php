@@ -20,4 +20,6 @@ interface NotificationInterface {
     public function addChannel($channelName, $channel);
 
     public function getChannels();
+    
+    public function getParamsTypeVersion();
 } 
